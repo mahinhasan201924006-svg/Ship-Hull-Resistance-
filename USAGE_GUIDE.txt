@@ -1,0 +1,311 @@
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║              COMPLETE USAGE GUIDE - STEP BY STEP                     ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+This guide walks you through EVERYTHING from download to GitHub upload.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: DOWNLOAD & EXTRACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Download ship-hull-resistance-ml.zip
+
+2. Extract:
+   Windows: Right-click → Extract All
+   Mac/Linux: unzip ship-hull-resistance-ml.zip
+
+3. Navigate to directory:
+   $ cd ship-hull-resistance-ml
+
+4. Verify files:
+   $ ls -la
+
+   You should see:
+   - README.md
+   - QUICKSTART.md
+   - requirements.txt
+   - upload_to_github.sh
+   - data/ (with CSV file)
+   - scripts/ (4 Python files)
+   - notebooks/ (Jupyter notebook)
+   - figures/ (empty)
+   - models/ (empty)
+   - qr_codes/ (empty)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: INSTALL DEPENDENCIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A - Virtual Environment (Recommended):
+   $ python -m venv venv
+   $ source venv/bin/activate  # Mac/Linux
+   $ venv\Scripts\activate     # Windows
+   $ pip install -r requirements.txt
+
+Option B - Global Install:
+   $ pip install -r requirements.txt
+
+Verify installation:
+   $ python -c "import sklearn, xgboost, pandas; print('OK')"
+
+   Expected output: OK
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3: RUN TRAINING SCRIPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Execute the main script:
+
+   $ python scripts/train_and_plot.py
+
+Or with explicit arguments:
+
+   $ python scripts/train_and_plot.py \
+       --csv data/calm_water_resistance_data_CORRECTED-1.csv \
+       --label Rt_N \
+       --task regression
+
+Wait ~30-60 seconds. You'll see:
+
+   ✓ Directories created
+   ✓ Dataset loaded: 60 rows, 16 columns
+   ✓ Task type detected: REGRESSION
+   ✓ Train set: (48, 15), Test set: (12, 15)
+
+   🔄 Training models...
+     ✓ Linear Regression trained
+     ✓ Random Forest trained
+     ✓ XGBoost trained
+
+   📊 Evaluating models...
+     [Performance metrics displayed]
+
+   🏆 Best model: Random Forest
+
+   💾 Model saved: models/random_forest_model.joblib
+
+   📱 Generating QR codes...
+     ✓ qr_codes/predicted_vs_actual_qr.png
+     ✓ qr_codes/poster_ready_figure_qr.png
+     ✓ qr_codes/correlation_heatmap_qr.png
+
+   ✅ All tasks complete!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4: VERIFY OUTPUTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Check figures:
+   $ ls figures/
+
+   Expected: 16 files
+   - data_stats.png + .svg
+   - feature_distributions.png + .svg
+   - correlation_heatmap.png + .svg
+   - model_cv_scores.png + .svg
+   - predicted_vs_actual.png + .svg
+   - residuals_histogram.png + .svg
+   - feature_importance.png + .svg
+   - poster_ready_figure.png + .svg
+
+Check model:
+   $ ls models/
+
+   Expected: 1 file
+   - random_forest_model.joblib (or xgboost_model.joblib)
+
+Check QR codes:
+   $ ls qr_codes/
+
+   Expected: 3 files
+   - predicted_vs_actual_qr.png
+   - poster_ready_figure_qr.png
+   - correlation_heatmap_qr.png
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 5: EXPLORE JUPYTER NOTEBOOK (Optional)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Launch Jupyter:
+   $ jupyter notebook notebooks/analysis.ipynb
+
+In browser:
+   1. Click "Cell" → "Run All"
+   2. Wait for all cells to execute
+   3. Review outputs (match script results)
+   4. Experiment with code
+
+Save notebook:
+   File → Save
+
+Close:
+   File → Close and Halt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 6: UPLOAD TO GITHUB (Optional)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+METHOD 1: GitHub CLI (Recommended)
+
+Prerequisites:
+   1. Install GitHub CLI: https://cli.github.com/
+   2. Login: $ gh auth login
+
+Steps:
+   1. Edit upload_to_github.sh:
+      - Change REPLACE_GH_USERNAME to your GitHub username
+      - Change REPLACE_REPO_NAME to desired repo name
+
+   2. Run:
+      $ bash upload_to_github.sh
+
+   3. Verify:
+      Visit https://github.com/YOUR_USERNAME/YOUR_REPO
+
+───────────────────────────────────────────────────────────────────────
+
+METHOD 2: Manual Git + Token
+
+Prerequisites:
+   1. Create repo on GitHub.com manually
+   2. Generate Personal Access Token:
+      GitHub Settings → Developer settings → Personal access tokens
+      Scopes: repo, workflow
+
+Steps:
+   1. Initialize repo:
+      $ git init
+      $ git branch -M main
+
+   2. Add files:
+      $ git add .
+      $ git commit -m "Initial commit: Ship hull ML project"
+
+   3. Add remote (replace USERNAME, TOKEN, REPO):
+      $ git remote add origin https://USERNAME:TOKEN@github.com/USERNAME/REPO.git
+
+   4. Push:
+      $ git push -u origin main
+
+   ⚠️ SECURITY: Never commit TOKEN to repo!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 7: UPDATE QR CODES (After GitHub Upload)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Edit scripts/generate_qr.py:
+
+   GITHUB_USERNAME = "your_actual_username"
+   REPO_NAME = "your_actual_repo_name"
+
+2. Regenerate QR codes:
+
+   $ python scripts/generate_qr.py
+
+3. Verify URLs:
+
+   QR codes will now point to:
+   https://raw.githubusercontent.com/USERNAME/REPO/main/figures/FILE.png
+
+4. Test QR codes:
+
+   - Scan with phone camera
+   - Should display figure directly
+   - Share QR code on poster/presentation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problem: ModuleNotFoundError
+Solution: pip install -r requirements.txt
+
+Problem: FileNotFoundError (CSV)
+Solution: Ensure CSV is in data/ directory
+
+Problem: Permission denied (upload script)
+Solution: chmod +x upload_to_github.sh
+
+Problem: Git push fails
+Solution: Check GitHub token permissions (repo, workflow)
+
+Problem: QR codes show 404
+Solution: Update GitHub username/repo in generate_qr.py
+
+Problem: Figures not generated
+Solution: Check write permissions in project directory
+
+Problem: Low model performance
+Solution: Normal - small dataset (60 samples), performance varies
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXPECTED PERFORMANCE METRICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Model               Test RMSE    Test R²     CV RMSE (mean ± std)
+─────────────────────────────────────────────────────────────────
+Linear Regression   ~265 N       ~0.74       ~265 ± 95 N
+Random Forest       ~27 N        ~0.997      ~27 ± 8.5 N  ← Best
+XGBoost             ~79 N        ~0.98       ~79 ± 22 N
+
+Best Model: Random Forest (lowest RMSE, highest R²)
+
+Note: Exact values vary due to random 80/20 train/test split
+      Fixed seed (42) ensures reproducibility within same environment
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before considering project complete:
+
+□ Dependencies installed (no errors)
+□ Training script executed successfully
+□ 16 figure files created (8 PNG + 8 SVG)
+□ 1 model file created (.joblib)
+□ 3 QR code files created
+□ Jupyter notebook runs without errors
+□ (Optional) Code pushed to GitHub
+□ (Optional) QR codes updated with real URLs
+□ Figures reviewed for poster use
+□ Model performance acceptable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After completing all steps:
+
+1. Use poster_ready_figure.png in your presentation
+2. Include other figures as needed
+3. Reference GitHub repo in poster (if uploaded)
+4. Add QR codes to poster for interactive access
+5. Share model file with collaborators
+6. Cite methodology from README.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you encounter issues:
+
+1. Check README.md troubleshooting section
+2. Review error messages carefully
+3. Verify all prerequisites installed
+4. Check file permissions
+5. Open GitHub issue (after upload)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 You're now ready to use the complete ML project!
+
+All files are production-ready. No code modifications needed except
+replacing placeholders (REPLACE_GH_USERNAME, REPLACE_REPO_NAME) before
+GitHub upload and QR code generation.
+
+Good luck with your poster/presentation! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
